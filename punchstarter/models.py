@@ -12,4 +12,7 @@ class Project(db.Model):
     goal_amount = db.Column(db.Integer)
     date_of_start = db.Column(db.DateTime)
     date_of_end = db.Column(db.DateTime)
-    
+
+class Pledge(db.Model):
+    amount = db.Column(db.Integer)
+    time_created = db.Column(db.DateTime)
