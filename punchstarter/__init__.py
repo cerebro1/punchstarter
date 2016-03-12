@@ -9,6 +9,7 @@ app = Flask(__name__)
 manager = Manager(app)
 
 db = SQLAlchemy(app)
+app.config.from_object('punchstarter.default_settings')
 migrate = Migrate(app, db)
 manager.add_command('db', MigrateCommand)
 @app.route("/")
