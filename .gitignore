@@ -1,2 +1,4 @@
 #ignore the .pyc file
 punchstarter/*.pyc
+migrations/env.pyc
+migrations/versions/ef79c6c29854_.pyc
