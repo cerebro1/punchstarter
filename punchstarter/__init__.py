@@ -12,6 +12,9 @@ db = SQLAlchemy(app)
 app.config.from_object('punchstarter.default_settings')
 migrate = Migrate(app, db)
 manager.add_command('db', MigrateCommand)
+
+from punchstarter.models import *
+
 @app.route("/")
 def hello():
     return render_template("index.html")
