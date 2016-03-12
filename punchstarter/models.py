@@ -7,12 +7,12 @@ class Member(db.Model):
     last_name = db.Column(db.String(100))
     date_of_birth = db.Column(db.DateTime)
     project = db.relationship('Project', backref = 'creator')
-    pledges = db.relationship('Pledge', backref = 'pledgor', foreign_key = 'Pledge.member_id')
+    pledges = db.relationship('Pledge', backref = 'pledgor', foreign_keys = 'Pledge.member_id')
 
 class Project(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     member_id = db.Column(db.Integer, db.ForeignKey('member.id'), nullable = False)
-    pledges = db.relationship('Pledge', backref = 'project', foreign_key = 'Pledge.project_id')
+    pledges = db.relationship('Pledge', backref = 'project', foreign_keys = 'Pledge.project_id')
     name = db.Column(db.String(100))
     description = db.Column(db.Text)
     goal_amount = db.Column(db.Integer)
