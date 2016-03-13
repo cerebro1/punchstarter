@@ -1,10 +1,49 @@
-<!DOCTYPE html>
-<html>
-<head lang="en">
-    <meta charset="UTF-8">
-    <title></title>
-</head>
-<body>
+{% extends "base.html" %}
 
-</body>
-</html>
+{% set active_page = "create" %}
+{% block subtitle%}
+   {{ project.name }}
+{% endblock %}
+
+{% block content %}
+
+    <div class = "row">
+        <div class="col-sm-12">
+            <h1 class="text-center"> {{project.name}}</h1>
+            <div class="text-center">By {{project.creator.first_name}} {{project.creator.last_name}}</div>
+        </div>
+    </div>
+
+    <div class="col-xs-12" style="height:30px;"></div>
+
+    <div class="row">
+        <div class="col-sm-8">
+            <div class="panel">
+                <img class="img-responsive center-block" src="http://placehold.it/600x400" width="600" height="400">
+                <p class="text-center"> {{project.description}}</p>
+            </div>
+        </div>
+
+      <div class="col-sm-4">
+
+        <div class="panel">
+            <span class="project-vitals">{{ project.num_pledges}}</span><strong> Pledges</strong>
+        </div>
+
+        <div class="panel">
+            <span class="project-vitals">Rs{{ project.total_pledges}}</span><strong> Pledged of Rs {{ project.goal_amount}} goal</strong>
+        </div>
+
+        <div class="panel">
+            <span class="project-vitals">{{ project.num_days_left}}</span><strong> days left</strong>
+        </div>
+
+        <div class="panel">
+            <a href="#" class="btn btn-default">Pledge Now</a>
+        </div>
+
+      </div>
+    </div>
+
+
+{% endblock%}

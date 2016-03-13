@@ -1,5 +1,6 @@
 __author__ = 'sonali'
 from punchstarter import db
+from sqlalchemy.sql import func
 
 class Member(db.Model):
     id = db.Column(db.Integer, primary_key = True)
@@ -18,6 +19,23 @@ class Project(db.Model):
     goal_amount = db.Column(db.Integer)
     date_of_start = db.Column(db.DateTime)
     date_of_end = db.Column(db.DateTime)
+
+    @property
+    def num_pledges(self):
+        return len(self.pledges)
+
+    @property
+    def total_pledges(self):
+        total_pledges = db.session.query(func.sum(Pledge.amount)).filter(Pledge.project_id==self.id).one()[0]
+        if total_pledges is None:
+            total_pledges = 0
+
+        return total_pledges
+
+    @property
+    def num_days_left(self):
+        days_left = (self.date_of_end - self.date_of_start).days
+        return days_left
 
 class Pledge(db.Model):
     id = db.Column(db.Integer, primary_key = True)
