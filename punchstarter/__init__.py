@@ -5,6 +5,7 @@ from flask.ext.script import Manager
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.migrate import Migrate, MigrateCommand
 import datetime
+
 app = Flask(__name__)
 manager = Manager(app)
 
@@ -29,7 +30,7 @@ def create():
         time_end = request.form.get("end_date")
         time_end = datetime.datetime.strptime(time_end,"%Y-%m-%d")
         new_project = Project(
-            member_id = 1,
+            member_id = 1,#hardcode member id
             name = request.form.get("project_name"),
             description = request.form.get("description"),
             goal_amount = request.form.get("goal_amount"),
@@ -49,3 +50,26 @@ def project_detail(project_id):
         abort(404)
 
     return render_template("project_detail.html", project=project)
+
+@app.route("/projects/<int:project_id>/pledge/", methods = ['GET', 'POST'])
+def pledge(project_id):
+    project = db.session.query(Project).get(project_id)
+    if project is None:
+        abort(404)
+    if request.method == 'GET':
+        return render_template("pledge.html", project=project)
+    if request.method == 'POST':
+        #hard code member id but change whwn create login form
+        guest_pledgor = db.session.query(Member).filter_by(id=2).one()
+        new_pledge = Pledge(
+            member_id = guest_pledgor.id,
+            project_id = project.id,
+            amount = request.form.get("amount"),
+            time_created = datetime.datetime.now()
+        )
+
+        db.session.add(new_pledge)
+        db.session.commit()
+
+        return redirect(url_for('project_detail', project_id = project.id))
+
