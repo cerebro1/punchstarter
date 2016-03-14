@@ -86,3 +86,14 @@ def pledge(project_id):
 
         return redirect(url_for('project_detail', project_id = project.id))
 
+@app.route("/search/")
+def search():
+    query = request.args.get("quer") or ""
+    projects = db.session.query(Project).filter(
+        Project.name.ilike('%'+query+'%') |
+        Project.description.ilike('%'+query+'%')
+    ).all()
+
+    project_count = len(projects)
+
+    return render_template("search.html", query_text = query, projects = projects, project_count = project_count)

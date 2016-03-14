@@ -41,7 +41,9 @@ class Project(db.Model):
     @property
     def image_path(self):
         return cloudinary.utils.cloudinary_url(self.image_filename)[0]
-
+    @property
+    def percentage_funded(self):
+        return int(self.total_pledges * 100 / self.goal_amount)
 class Pledge(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     member_id = db.Column(db.Integer, db.ForeignKey('member.id'), nullable = False)
