@@ -1,7 +1,7 @@
 __author__ = 'sonali'
 from punchstarter import db
 from sqlalchemy.sql import func
-
+import cloudinary.utils
 class Member(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     first_name = db.Column(db.String(100))
@@ -17,6 +17,7 @@ class Project(db.Model):
     name = db.Column(db.String(100))
     description = db.Column(db.Text)
     goal_amount = db.Column(db.Integer)
+    image_filename = db.Column(db.String(300))
     date_of_start = db.Column(db.DateTime)
     date_of_end = db.Column(db.DateTime)
 
@@ -36,6 +37,10 @@ class Project(db.Model):
     def num_days_left(self):
         days_left = (self.date_of_end - self.date_of_start).days
         return days_left
+
+    @property
+    def image_path(self):
+        return cloudinary.utils.cloudinary_url(self.image_filename)[0]
 
 class Pledge(db.Model):
     id = db.Column(db.Integer, primary_key = True)

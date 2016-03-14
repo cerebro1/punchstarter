@@ -5,7 +5,7 @@ from flask.ext.script import Manager
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.migrate import Migrate, MigrateCommand
 import datetime
-
+import cloudinary.uploader
 app = Flask(__name__)
 manager = Manager(app)
 
@@ -29,11 +29,24 @@ def create():
         time_start = datetime.datetime.strptime(time_start,"%Y-%m-%d")
         time_end = request.form.get("end_date")
         time_end = datetime.datetime.strptime(time_end,"%Y-%m-%d")
+
+        #upload cover_photo
+        cover_photo = request.files['cover_photo']
+        uploaded_image = cloudinary.uploader.upload(
+            cover_photo,
+            crop = 'limit',
+            width = 600,
+            height = 400
+        )
+        image_filename = uploaded_image["public_id"]
+
+
         new_project = Project(
             member_id = 1,#hardcode member id
             name = request.form.get("project_name"),
             description = request.form.get("description"),
             goal_amount = request.form.get("goal_amount"),
+            image_filename = image_filename,
             date_of_start = time_start,
             date_of_end = time_end
         )
