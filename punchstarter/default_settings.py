@@ -11,7 +11,7 @@ SQLALCHEMY_DATABASE_URI = "sqlite:///" + BASE_DIR + "/app.db"
 
 
 cloudinary.config(
-  cloud_name = "dqldclhq4",
-  api_key = "792831388795511",
-  api_secret = "ShNoCvePuRV66PD0EuuOS7LuT8s"
+  cloud_name = os.environ.get('CLOUD_NAME'),
+  api_key = os.environ.get('API_KEY'),
+  api_secret = os.environ.get('API_SECRET')
 )
